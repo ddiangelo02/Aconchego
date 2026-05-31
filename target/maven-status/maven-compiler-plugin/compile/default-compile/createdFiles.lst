@@ -1,0 +1,8 @@
+com\ddiangelo\aconchego\controle\PrincipalServlet.class
+com\ddiangelo\aconchego\modelo\Usuario.class
+com\ddiangelo\aconchego\ConnectionFactory.class
+com\ddiangelo\aconchego\JakartaRestConfiguration.class
+com\ddiangelo\aconchego\controle\usuario\UsuarioLoginServlet.class
+com\ddiangelo\aconchego\resources\JakartaEE10Resource.class
+com\ddiangelo\aconchego\Utils.class
+com\ddiangelo\aconchego\modelo\UsuarioDAO.class

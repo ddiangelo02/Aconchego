@@ -1,0 +1,111 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>-->
+<script src="https://cdn.tailwindcss.com?version=3.4.5"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            'cream-light': '#FDF9F2',      
+            'cream-dark': '#EBE0D2',       
+            'brown-dark': '#5D4037',       
+            'brown-medium': '#8D6E63',     
+            'brown-footer': '#795548',     
+            'button': '#9E7764',            
+            'button-hover': '#8D6A59',      
+            'green-btn': '#8A9A5B',        
+            'green-btn-hover': '#7B8D4E',  
+            'yellow-highlight': '#FDF5C9', 
+          },
+          neutral: {
+            'text': '#333333',             
+            'light-gray': '#E0E0E0',       
+          }
+        },
+        fontFamily: {
+          heading: ['"Playfair Display"', 'serif'],
+          body: ['"Inter"', 'sans-serif'], 
+        },
+        fontSize: {
+          'display-1': ['2.5rem', { lineHeight: '1.2' }], 
+          'heading-1': ['2.25rem', { lineHeight: '1.3' }], 
+          'heading-2': ['1.25rem', { lineHeight: '1.4' }],  
+          'base-body': ['1rem', { lineHeight: '1.7' }],   
+          'price': ['1.25rem', { lineHeight: '1.2' }],     
+        },
+        spacing: {
+          'gutter': '2rem',       
+          'section-gap': '6rem',  
+          'element-gap': '3rem',  
+          'card-gap': '1.5rem',   
+          'inner-p': '1.25rem',   
+        },
+      },
+    },
+  }
+</script>
+<style type="text/tailwindcss">
+  @layer components {
+    body {
+      @apply bg-brand-cream-light text-brand-brown-dark font-body antialiased;
+    }
+
+    .section-container {
+      @apply container mx-auto px-gutter mb-section-gap max-w-6xl;
+    }
+
+    .title-section {
+      @apply font-heading text-heading-1 text-brand-brown-dark text-center mb-element-gap font-bold italic;
+    }
+
+    .text-description {
+      @apply font-body text-base-body text-brand-brown-medium font-normal leading-relaxed;
+    }
+
+    .btn-base {
+      @apply font-body text-sm md:text-base px-8 py-3 rounded-lg font-medium tracking-wide transition-all duration-200 inline-block text-center shadow-sm cursor-pointer;
+    }
+
+    .btn-brown {
+      @apply btn-base bg-brand-button hover:bg-brand-button-hover text-white;
+    }
+
+    .btn-green {
+      @apply btn-base bg-brand-green-btn hover:bg-brand-green-btn-hover text-white;
+    }
+
+    .card-product {
+      @apply rounded-2xl bg-brand-cream-light p-4 flex flex-col items-start border border-transparent hover:border-brand-cream-dark transition-all duration-200 relative;
+    }
+
+    .card-product-image-wrapper {
+      @apply w-full aspect-square bg-gray-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden relative;
+    }
+
+    .card-product-title {
+      @apply font-body text-heading-2 text-brand-brown-dark font-semibold mt-2;
+    }
+
+    .card-plan {
+      @apply rounded-2xl shadow-sm bg-white p-6 border border-neutral-light-gray flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1;
+    }
+
+    .card-plan-highlight {
+      @apply card-plan bg-brand-yellow-highlight border-amber-100;
+    }
+
+    .footer-main {
+      @apply bg-brand-brown-footer text-brand-cream-light pt-16 pb-8 px-gutter font-body text-sm;
+    }
+
+    .footer-title {
+      @apply font-heading text-xl font-bold text-white mb-6 italic;
+    }
+  }
+</style>
