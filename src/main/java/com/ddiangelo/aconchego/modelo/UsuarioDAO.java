@@ -60,7 +60,7 @@ public class UsuarioDAO {
         try {
             
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, nome, endereco, login, senha, administrador, email FROM usuario WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, nome, endereco, login, senha, administrador, email FROM usuarios WHERE id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             
@@ -94,7 +94,7 @@ public class UsuarioDAO {
         Usuario usuario = null;
         try {
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, nome, endereco, login, senha, administrador, email FROM usuario WHERE login = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, nome, endereco, login, senha, administrador, email FROM usuarios WHERE login = ?");
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             
@@ -133,7 +133,7 @@ public class UsuarioDAO {
         try {
             
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO usuario (nome, endereco, email, login, senha, administrador) VALUES (?, ?, ?, ?, ?, FALSE)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO usuarios (nome, endereco, email, login, senha, administrador) VALUES (?, ?, ?, ?, ?, FALSE)");
             preparedStatement.setString(1, nome);
             preparedStatement.setString(2, endereco);
             preparedStatement.setString(3, email);
@@ -165,7 +165,7 @@ public class UsuarioDAO {
         try {
             
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE usuario SET nome = ?, endereco = ?, email = ?, login = ? WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE usuarios SET nome = ?, endereco = ?, email = ?, login = ? WHERE id = ?");
             preparedStatement.setString(1, nome);
             preparedStatement.setString(2, endereco);
             preparedStatement.setString(3, email);
@@ -197,7 +197,7 @@ public class UsuarioDAO {
         try {
             
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE usuario SET nome = ?, endereco = ?, email = ?, login = ?, senha = ? WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE usuarios SET nome = ?, endereco = ?, email = ?, login = ?, senha = ? WHERE id = ?");
             preparedStatement.setString(1, nome);
             preparedStatement.setString(2, endereco);
             preparedStatement.setString(3, email);
@@ -224,7 +224,7 @@ public class UsuarioDAO {
         try {
             
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM usuario WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM usuarios WHERE id = ?");
             preparedStatement.setInt(1, id);
             sucesso = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();
@@ -247,7 +247,7 @@ public class UsuarioDAO {
         try {
             
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM usuario WHERE login = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM usuarios WHERE login = ?");
             preparedStatement.setString(1, login);
             sucesso = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();

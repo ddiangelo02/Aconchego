@@ -10,9 +10,9 @@ public class ConnectionFactory {
     
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/aconchegoecommerce";
 
-    private static final String JDBC_USER = "root";
+    private static final String JDBC_USER = "postgres";
 
-    private static final String JDBC_PASSWORD = "";
+    private static final String JDBC_PASSWORD = "admin123";
     
 
     public static Connection getConnection() throws SQLException {
