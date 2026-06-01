@@ -20,8 +20,8 @@ Nosso objetivo é conectar artesãos a pessoas que buscam produtos com significa
 Para materializar esse espaço de aconchego, utilizamos as seguintes tecnologias:
 
 *   **Front-end:** HTML5, CSS3, JavaScript e jQuery
-*   **Back-end:** PHP e Laravel
-*   **Banco de Dados:** MySQL
+*   **Back-end:** Java / WebServlet
+*   **Banco de Dados:** PostgreSQL
 *   **Estilização:** TailwindCSS
 *   **Design & Prototipagem:** Figma
 
