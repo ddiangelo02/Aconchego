@@ -1,5 +1,6 @@
 com\ddiangelo\aconchego\modelo\AssinaturaDAO.class
 com\ddiangelo\aconchego\modelo\Usuario.class
+com\ddiangelo\aconchego\controle\usuario\UsuarioCadastroServlet.class
 com\ddiangelo\aconchego\modelo\CategoriaDAO.class
 com\ddiangelo\aconchego\resources\JakartaEE10Resource.class
 com\ddiangelo\aconchego\modelo\Assinatura.class
@@ -12,4 +13,5 @@ com\ddiangelo\aconchego\ConnectionFactory.class
 com\ddiangelo\aconchego\JakartaRestConfiguration.class
 com\ddiangelo\aconchego\controle\usuario\UsuarioLoginServlet.class
 com\ddiangelo\aconchego\modelo\Produto.class
+com\ddiangelo\aconchego\controle\usuario\UsuarioConfiguracoesServlet.class
 com\ddiangelo\aconchego\App.class

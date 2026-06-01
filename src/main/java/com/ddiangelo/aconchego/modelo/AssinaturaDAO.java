@@ -114,8 +114,6 @@ public class AssinaturaDAO {
      * @param nome
      * @param descricao
      * @param preco
-     * @param foto
-     * @param quantidade
      * @param id
      * @return
      */

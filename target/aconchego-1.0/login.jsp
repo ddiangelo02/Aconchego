@@ -33,7 +33,7 @@
                                         <% }%>
 
                                             <div>
-                                                <input type="email" placeholder="Seu e-mail"
+                                                <input type="text" placeholder="Seu nome de usuário"
                                                     class="w-full bg-white border border-[#EBE0D2] rounded-xl px-5 py-3.5 font-body text-brand-brown-footer placeholder:text-[#C4B4A9] placeholder focus:outline-none focus:ring-1 focus:ring-brand-button focus:border-brand-button transition-colors"
                                                     required name="login">
                                             </div>
@@ -53,7 +53,7 @@
 
                             <p class="text-center mt-8 font-body text-brand-brown-medium">
                                 Não tem uma conta?
-                                <a href="#"
+                                <a href="${pageContext.request.contextPath}/cadastro.jsp"
                                     class="font-bold text-brand-green-btn hover:text-brand-green-btn-hover not transition-colors">
                                     Cadastre-se
                                 </a>
