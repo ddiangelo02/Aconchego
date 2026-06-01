@@ -44,6 +44,7 @@ public class UsuarioDAO {
             connection.close();
             
         } catch (SQLException ex) {
+            ex.printStackTrace();
             return null;
         }
         return resultado;
@@ -94,6 +95,7 @@ public class UsuarioDAO {
         Usuario usuario = null;
         try {
             Connection connection = ConnectionFactory.getConnection();
+            System.out.println(connection);
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, nome, endereco, login, senha, administrador, email FROM usuarios WHERE login = ?");
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -144,6 +146,7 @@ public class UsuarioDAO {
             connection.close();
             
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
             return false;
         }
         return sucesso;

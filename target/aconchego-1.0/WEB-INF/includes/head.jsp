@@ -5,18 +5,19 @@
 <script src="https://cdn.tailwindcss.com?version=3.4.5"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
           brand: {
+            'cream-lightener': '#FBF8F1',
             'cream-light': '#FDF9F2',      
             'cream-dark': '#EBE0D2',       
             'brown-dark': '#5D4037',       
             'brown-medium': '#8D6E63',     
-            'brown-footer': '#795548',     
+            'brown-footer': '#AD6B49',     
             'button': '#9E7764',            
             'button-hover': '#8D6A59',      
             'green-btn': '#8A9A5B',        
@@ -29,8 +30,8 @@
           }
         },
         fontFamily: {
-          heading: ['"Playfair Display"', 'serif'],
-          body: ['"Inter"', 'sans-serif'], 
+          heading: ['"Kalam"', 'serif'],
+          body: ['"Kalam"', 'sans-serif'], 
         },
         fontSize: {
           'display-1': ['2.5rem', { lineHeight: '1.2' }], 
@@ -53,7 +54,11 @@
 <style type="text/tailwindcss">
   @layer components {
     body {
-      @apply bg-brand-cream-light text-brand-brown-dark font-body antialiased;
+      @apply bg-white text-brand-brown-dark font-body antialiased;
+    }
+    
+    header {
+        @apply bg-brand-cream-lightener;
     }
 
     .section-container {
@@ -61,7 +66,7 @@
     }
 
     .title-section {
-      @apply font-heading text-heading-1 text-brand-brown-dark text-center mb-element-gap font-bold italic;
+      @apply font-heading text-heading-1 text-brand-brown-dark text-center mb-element-gap font-bold;
     }
 
     .text-description {
@@ -105,7 +110,7 @@
     }
 
     .footer-title {
-      @apply font-heading text-xl font-bold text-white mb-6 italic;
+      @apply font-heading text-xl font-bold text-white mb-6;
     }
   }
 </style>

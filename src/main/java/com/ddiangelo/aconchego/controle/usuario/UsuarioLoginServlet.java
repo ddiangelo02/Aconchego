@@ -14,12 +14,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.ddiangelo.aconchego.modelo.Usuario;
 import com.ddiangelo.aconchego.Utils;
 import com.ddiangelo.aconchego.modelo.UsuarioDAO;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author thimo
  */
+@WebServlet(name = "UsuarioLoginServlet", urlPatterns = {"/login"})
 public class UsuarioLoginServlet extends HttpServlet {
 
 
@@ -37,14 +39,23 @@ public class UsuarioLoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         
-        if (session.getAttribute("usuarioId") != null && usuarioDAO.obterPeloId(Integer.parseInt(session.getAttribute("usuarioId").toString())) != null) {
+        if (session.getAttribute("usuario") != null) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/");
             requestDispatcher.forward(request, response);
             return;
         }
         
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
-        requestDispatcher.forward(request, response);
+        // System.out.println("Mensagem: " + request.getAttribute("mensagem"));
+
+        Object mensagem = session.getAttribute("mensagem");
+
+        if (mensagem != null) {
+            request.setAttribute("mensagem", mensagem);
+            session.removeAttribute("mensagem");
+        }
+
+        request.getRequestDispatcher("/login.jsp")
+               .forward(request, response);
     }
     
     /**
@@ -78,15 +89,15 @@ public class UsuarioLoginServlet extends HttpServlet {
                 throw new Exception("Login e/ou senha inválidos.");
             }
             
-            HttpSession session = request.getSession(true);
-            session.setAttribute("usuarioId", usuario.getId());
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/");
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", usuario);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
             requestDispatcher.forward(request, response);
             
         } catch (Exception e) {
-            request.setAttribute("mensagem", e.getMessage());
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
-            requestDispatcher.forward(request, response);
+            HttpSession session = request.getSession();
+            session.setAttribute("mensagem", e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/login");
         }
         
     }

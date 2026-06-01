@@ -8,11 +8,11 @@ public class ConnectionFactory {
     
     private static final String JDBC_DRIVER = "org.postgresql.Driver";
     
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/aconchegoecommerce";
+    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/aconchego";
 
     private static final String JDBC_USER = "postgres";
 
-    private static final String JDBC_PASSWORD = "admin123";
+    private static final String JDBC_PASSWORD = "postgres";
     
 
     public static Connection getConnection() throws SQLException {
@@ -23,12 +23,12 @@ public class ConnectionFactory {
         } catch (ClassNotFoundException e) {
             System.out.println("PostgreSQL Driver not found!");
             e.printStackTrace();
-            return null;
+            throw new SQLException("PostgreSQL Driver not found", e);
             
         } catch (SQLException e) {
             System.out.println("Connection failed!");
             e.printStackTrace();
-            return null;
+            throw e;
             
         }
     }
