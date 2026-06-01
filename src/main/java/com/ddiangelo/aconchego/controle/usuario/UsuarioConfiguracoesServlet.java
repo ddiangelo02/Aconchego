@@ -26,12 +26,12 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
             throws ServletException, IOException {
         // entrada
         
-        
+        int id = Integer.parseInt(request.getParameter("id"));
         String nome = request.getParameter("nome");
         String endereco = request.getParameter("endereco");
         String email = request.getParameter("email");
         String login = request.getParameter("login");
-        int id = Integer.parseInt(request.getParameter("id"));
+        
         // processamento
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         boolean sucesso = usuarioDAO.atualizar(nome, endereco, email, login, id);
