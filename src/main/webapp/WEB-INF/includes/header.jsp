@@ -1,9 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.ddiangelo.aconchego.modelo.Usuario"%>
+<%@page import="com.ddiangelo.aconchego.modelo.UsuarioDAO"%>
 <%
     Usuario usuario = null;
     if (session.getAttribute("usuario") != null && session.getAttribute("usuario") instanceof Usuario) {
-        usuario = (Usuario) session.getAttribute("usuario");
+        Usuario usuario_sessao = (Usuario)session.getAttribute("usuario");
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuario = usuarioDAO.obterPeloId(usuario_sessao.getId());
     }
 %>
 <header class="flex items-center justify-center py-8 gap-16 shadow-md">
@@ -44,7 +47,7 @@
         <% } else { %>
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-        <a href="${pageContext.request.contextPath}/editar-usuario.jsp"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 400 512"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="30" d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"/></svg>
+        <a href="${pageContext.request.contextPath}/configuracoes"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 400 512"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="30" d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"/></svg>
         </a> 
         <button class="px-4 py-2 bg-brand-brown-footer text-white rounded-xl">
             <a href="logout">
