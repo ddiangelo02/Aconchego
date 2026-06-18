@@ -15,4 +15,5 @@ com\ddiangelo\aconchego\controle\usuario\UsuarioLoginServlet.class
 com\ddiangelo\aconchego\modelo\Produto.class
 com\ddiangelo\aconchego\controle\usuario\UsuarioConfiguracoesServlet.class
 com\ddiangelo\aconchego\App.class
+com\ddiangelo\aconchego\controle\usuario\UsuarioExclusaoServlet.class
 com\ddiangelo\aconchego\controle\usuario\UsuarioLogoutServlet.class

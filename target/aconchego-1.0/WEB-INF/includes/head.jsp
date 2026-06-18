@@ -57,6 +57,10 @@
       @apply bg-white text-brand-brown-dark font-body antialiased;
     }
     
+    header p {
+        @apply text-brand-brown-footer;
+    }
+    
     header {
         @apply bg-brand-cream-lightener;
     }

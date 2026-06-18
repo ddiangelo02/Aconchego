@@ -19,9 +19,11 @@ import jakarta.servlet.http.HttpSession;
 /**
  *
  * @author Usuário
+ *
+ * Servlet responsável exclusivamente pela alteração de senha do usuário.
  */
-@WebServlet(name = "UsuarioConfiguracoesServlet", urlPatterns = {"/configuracoes"})
-public class UsuarioConfiguracoesServlet extends HttpServlet {
+@WebServlet(name = "UsuarioSenhaServlet", urlPatterns = {"/alterar-senha"})
+public class UsuarioSenhaServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -45,32 +47,42 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
                 throw new Exception("Não foi possível localizar a sua conta.");
             }
 
-            String nome = request.getParameter("nome");
-            String email = request.getParameter("email");
             String senhaAtual = request.getParameter("senha-atual");
+            String senhaNova = request.getParameter("senha-nova");
+            String senhaConfirmacao = request.getParameter("senha-confirmacao");
 
-            // A senha atual é obrigatória para confirmar a alteração dos dados
+            // A senha atual é obrigatória para confirmar a alteração
             if (senhaAtual == null || senhaAtual.isEmpty()) {
-                throw new Exception("Informe a sua senha atual para salvar as alterações.");
+                throw new Exception("Informe a sua senha atual para alterar a senha.");
             }
 
             if (!usuario.getSenha().equals(Utils.gerarSHA256(senhaAtual))) {
                 throw new Exception("A senha atual está incorreta.");
             }
 
-            if (nome == null || nome.trim().isEmpty()
-                    || email == null || email.trim().isEmpty()) {
-                throw new Exception("Preencha o nome e o e-mail.");
+            if (senhaNova == null || senhaNova.isEmpty()) {
+                throw new Exception("Informe a nova senha.");
             }
 
-            // Campos preservados (não editáveis nesta tela)
-            String endereco = usuario.getEndereco();
-            String login = usuario.getLogin();
+            if (senhaNova.length() < 6) {
+                throw new Exception("A nova senha deve possuir, pelo menos, 6 caracteres.");
+            }
 
-            boolean sucesso = usuarioDAO.atualizar(nome.trim(), endereco, email.trim(), login, usuario.getId());
+            if (!senhaNova.equals(senhaConfirmacao)) {
+                throw new Exception("A confirmação da nova senha não coincide.");
+            }
+
+            // Mantém os demais dados; altera apenas a senha
+            boolean sucesso = usuarioDAO.atualizar(
+                    usuario.getNome(),
+                    usuario.getEndereco(),
+                    usuario.getEmail(),
+                    usuario.getLogin(),
+                    senhaNova,
+                    usuario.getId());
 
             if (!sucesso) {
-                throw new Exception("Não foi possível atualizar o seu cadastro. Tente novamente.");
+                throw new Exception("Não foi possível alterar a sua senha. Tente novamente.");
             }
 
             // Atualiza a sessão com os dados recém-salvos
@@ -78,7 +90,7 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
             session.setAttribute("usuario", atualizado);
 
             request.setAttribute("status", "sucesso");
-            request.setAttribute("mensagem", "Seus dados foram atualizados com sucesso!");
+            request.setAttribute("mensagem", "Sua senha foi alterada com sucesso!");
 
         } catch (Exception ex) {
             request.setAttribute("status", "erro");
@@ -87,34 +99,5 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/configuracoes.jsp");
         requestDispatcher.forward(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-
-        if (session.getAttribute("usuario") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
-        Object mensagem = session.getAttribute("mensagem");
-
-        if (mensagem != null) {
-            request.setAttribute("mensagem", mensagem);
-            session.removeAttribute("mensagem");
-        }
-
-        request.getRequestDispatcher("/configuracoes.jsp")
-               .forward(request, response);
     }
 }
