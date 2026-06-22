@@ -297,12 +297,12 @@ COPY public.pedido_itens (id, pedido_id, produto_id, quantidade, preco_unitario)
 --
 
 COPY public.pedidos (id, data_hora, usuario_id, forma_pagamento, total) FROM stdin;
-1	2026-06-21 18:17:13.233	1	Migrado	19.99
-2	2026-06-21 18:38:19.372	1	Migrado	84.99
-3	2026-06-21 18:38:41.037	1	Migrado	59.97
-4	2026-06-21 19:01:34.495	1	Migrado	199.96
-5	2026-06-21 19:01:52.785	1	Migrado	39.99
-6	2026-06-21 19:01:53.038	1	Migrado	84.99
+1	2026-06-21 18:17:13.233	1	Pix	19.99
+2	2026-06-21 18:38:19.372	1	Pix	84.99
+3	2026-06-21 18:38:41.037	1	Pix	59.97
+4	2026-06-21 19:01:34.495	1	Pix	199.96
+5	2026-06-21 19:01:52.785	1	Pix	39.99
+6	2026-06-21 19:01:53.038	1	Pix	84.99
 7	2026-06-21 22:23:05.556	1	Cartão de crédito	169.98
 8	2026-06-21 22:24:02.777	1	Pix	94.89
 \.
