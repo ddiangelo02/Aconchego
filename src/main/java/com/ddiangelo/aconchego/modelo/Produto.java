@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.ddiangelo.aconchego.modelo;
 
-/**
- *
- * @author thimo
- */
+
 public class Produto {
 
     private int id;
@@ -16,6 +10,24 @@ public class Produto {
     private double preco;
     private String foto;
     private int quantidade;
+    private int categoriaId;
+    private String categoriaNome;
+
+    public int getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(int categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public String getCategoriaNome() {
+        return categoriaNome;
+    }
+
+    public void setCategoriaNome(String categoriaNome) {
+        this.categoriaNome = categoriaNome;
+    }
 
     public int getId() {
         return id;

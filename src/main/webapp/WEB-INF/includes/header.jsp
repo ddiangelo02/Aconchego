@@ -23,8 +23,9 @@
 
         if (!urlAtual.equals(link)) { %>
 
-    <div class="hidden md:flex w-1/3">
-        <input type="text" placeholder="O que você procura?" class="w-full bg-white border border-gray-200 rounded-full px-6 py-2 text-sm focus:outline-none focus:border-brand-button">
+    <div class="hidden md:flex w-1/3 relative">
+        <input type="text" id="busca-input" autocomplete="off" placeholder="O que você procura?" class="w-full bg-white border border-gray-200 rounded-full px-6 py-2 text-sm focus:outline-none focus:border-brand-button">
+        <div id="busca-resultados" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg z-50 overflow-hidden max-h-96 overflow-y-auto"></div>
     </div>
     <% } %>
 
@@ -45,10 +46,12 @@
             </a>
         </button>
         <% } else { %>
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-        <a href="${pageContext.request.contextPath}/configuracoes"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 400 512"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="30" d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"/></svg>
-        </a> 
+        <a href="${pageContext.request.contextPath}/favoritos" title="Loja"><span class="material-symbols-rounded text-3xl">favorite</span></a>
+        <a href="${pageContext.request.contextPath}/carrinho" title="Carrinho"><span class="material-symbols-rounded text-3xl">shopping_bag</span></a>
+        <% if (usuario.isAdministrador()) { %>
+        <a href="${pageContext.request.contextPath}/admin" title="Painel Admin"><span class="material-symbols-rounded text-3xl">dashboard_customize</span></a>
+        <% } %>
+        <a href="${pageContext.request.contextPath}/configuracoes"><span class="material-symbols-rounded text-3xl">account_circle</span></a>
         <button class="px-4 py-2 bg-brand-brown-footer text-white rounded-xl">
             <a href="logout">
                 <div class="flex items-center justify-center gap-2">
@@ -65,3 +68,47 @@
     </div>
 
 </header>
+
+<script>
+
+    (function () {
+        var input = document.getElementById('busca-input');
+        var box = document.getElementById('busca-resultados');
+        if (!input || !box) { return; }
+        var ctx = '<%= request.getContextPath() %>';
+        var timer;
+
+        function fmtPreco(v) { return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
+
+        input.addEventListener('input', function () {
+            clearTimeout(timer);
+            var q = input.value.trim();
+            if (q.length < 2) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+            timer = setTimeout(function () {
+                fetch(ctx + '/busca?q=' + encodeURIComponent(q))
+                    .then(function (r) { return r.json(); })
+                    .then(function (itens) {
+                        if (!itens.length) {
+                            box.innerHTML = '<div class="px-4 py-3 text-sm text-gray-400 font-body">Nenhum produto encontrado</div>';
+                        } else {
+                            box.innerHTML = itens.map(function (p) {
+                                return '<a href="' + ctx + '/produto?id=' + p.id + '" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-50">'
+                                    + '<div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex items-center justify-center shrink-0">'
+                                    + (p.foto ? '<img src="' + p.foto + '" class="w-full h-full object-cover">' : '')
+                                    + '</div><div class="min-w-0">'
+                                    + '<p class="text-sm font-bold text-brand-brown-footer truncate">' + p.nome + '</p>'
+                                    + '<p class="text-xs text-brand-brown-medium">' + fmtPreco(p.preco) + '</p>'
+                                    + '</div></a>';
+                            }).join('');
+                        }
+                        box.classList.remove('hidden');
+                    })
+                    .catch(function () { box.classList.add('hidden'); });
+            }, 250);
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!input.contains(e.target) && !box.contains(e.target)) { box.classList.add('hidden'); }
+        });
+    })();
+</script>

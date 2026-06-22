@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package com.ddiangelo.aconchego.controle.usuario;
 
 import jakarta.servlet.RequestDispatcher;
@@ -16,10 +12,6 @@ import com.ddiangelo.aconchego.Utils;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpSession;
 
-/**
- *
- * @author Usuário
- */
 @WebServlet(name = "UsuarioConfiguracoesServlet", urlPatterns = {"/configuracoes"})
 public class UsuarioConfiguracoesServlet extends HttpServlet {
 
@@ -39,7 +31,6 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
 
         try {
 
-            // Recarrega os dados atuais (a sessão pode estar defasada)
             Usuario usuario = usuarioDAO.obterPeloId(usuarioSessao.getId());
             if (usuario == null) {
                 throw new Exception("Não foi possível localizar a sua conta.");
@@ -47,9 +38,9 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
 
             String nome = request.getParameter("nome");
             String email = request.getParameter("email");
+            String endereco = request.getParameter("endereco");
             String senhaAtual = request.getParameter("senha-atual");
 
-            // A senha atual é obrigatória para confirmar a alteração dos dados
             if (senhaAtual == null || senhaAtual.isEmpty()) {
                 throw new Exception("Informe a sua senha atual para salvar as alterações.");
             }
@@ -58,13 +49,10 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
                 throw new Exception("A senha atual está incorreta.");
             }
 
-            if (nome == null || nome.trim().isEmpty()
-                    || email == null || email.trim().isEmpty()) {
-                throw new Exception("Preencha o nome e o e-mail.");
+            if (nome == null || nome.trim().isEmpty() || email == null || email.trim().isEmpty() || endereco == null || endereco.trim().isEmpty()) {
+                throw new Exception("Preencha os campos obrigatórios.");
             }
 
-            // Campos preservados (não editáveis nesta tela)
-            String endereco = usuario.getEndereco();
             String login = usuario.getLogin();
 
             boolean sucesso = usuarioDAO.atualizar(nome.trim(), endereco, email.trim(), login, usuario.getId());
@@ -73,7 +61,6 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
                 throw new Exception("Não foi possível atualizar o seu cadastro. Tente novamente.");
             }
 
-            // Atualiza a sessão com os dados recém-salvos
             Usuario atualizado = usuarioDAO.obterPeloId(usuario.getId());
             session.setAttribute("usuario", atualizado);
 
@@ -89,14 +76,6 @@ public class UsuarioConfiguracoesServlet extends HttpServlet {
         requestDispatcher.forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

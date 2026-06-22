@@ -5,102 +5,54 @@ import java.util.List;
 import java.sql.*;
 import com.ddiangelo.aconchego.ConnectionFactory;
 
-/**
- *
- * @author Dailane Florencio
- *
- * Classe que implementa o padrão DAO para a entidade Produtos
- */
 public class CategoriaDAO {
 
-    /**
-     * Método utilizado para obter todos os produtos existentes
-     *
-     * @return
-     */
-    public List<Assinatura> obterTodos() {
-        List<Assinatura> resultado = new ArrayList<Assinatura>();
+    public List<Categoria> obterTodos() {
+        List<Categoria> resultado = new ArrayList<Categoria>();
         try {
-
             Connection connection = ConnectionFactory.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT id, nome, descricao, preco FROM assinatura");
-
+            ResultSet resultSet = statement.executeQuery("SELECT id, nome FROM categorias ORDER BY nome");
             while (resultSet.next()) {
-                Assinatura assinatura = new Assinatura();
-                assinatura.setId(resultSet.getInt("id"));
-                assinatura.setNome(resultSet.getString("nome"));
-                assinatura.setDescricao(resultSet.getString("descricao"));
-                assinatura.setPreco(resultSet.getDouble("preco"));
-                resultado.add(assinatura);
+                resultado.add(montar(resultSet));
             }
-
             resultSet.close();
             statement.close();
             connection.close();
-
         } catch (SQLException ex) {
             return null;
         }
         return resultado;
     }
 
-    /**
-     * Método utilizado para obter um assinatura existente pelo id
-     *
-     * @param id
-     * @return
-     */
-    public Assinatura obterPeloId(int id) {
-        Assinatura assinatura = null;
+    public Categoria obterPeloId(int id) {
+        Categoria categoria = null;
         try {
-
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, nome, descricao, preco FROM assinatura WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, nome FROM categorias WHERE id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                assinatura = new Assinatura();
-                assinatura.setId(resultSet.getInt("id"));
-                assinatura.setNome(resultSet.getString("nome"));
-                assinatura.setDescricao(resultSet.getString("descricao"));
-                assinatura.setPreco(resultSet.getDouble("preco"));
-
+            if (resultSet.next()) {
+                categoria = montar(resultSet);
             }
-
             resultSet.close();
             preparedStatement.close();
             connection.close();
         } catch (SQLException ex) {
             return null;
         }
-        return assinatura;
+        return categoria;
     }
 
-    /**
-     * Método utilizado para inserir um assinatura
-     *
-     * @param nome
-     * @param descricao
-     * @param preco
-     * @param foto
-     * @param quantidade
-     * @return
-     */
-    public boolean inserirAssinatura(String nome, String descricao, double preco) {
+    public boolean inserir(String nome) {
         boolean sucesso = false;
         try {
-
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO assinatura (nome, descricao, preco) VALUES (?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO categorias (nome) VALUES (?)");
             preparedStatement.setString(1, nome);
-            preparedStatement.setString(2, descricao);
-            preparedStatement.setDouble(3, preco);
             sucesso = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();
             connection.close();
-
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
@@ -108,58 +60,47 @@ public class CategoriaDAO {
         return sucesso;
     }
 
-    /**
-     * Método utilizado para atualizar os dados de um assinatura existente
-     *
-     * @param nome
-     * @param descricao
-     * @param preco
-     * @param foto
-     * @param quantidade
-     * @param id
-     * @return
-     */
-    public boolean atualizarAssinatura(String nome, String descricao, double preco, int id) {
+    public boolean atualizar(String nome, int id) {
         boolean sucesso = false;
         try {
-
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE assinatura SET nome = ?, descricao = ?, preco = ? WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE categorias SET nome = ? WHERE id = ?");
             preparedStatement.setString(1, nome);
-            preparedStatement.setString(2, descricao);
-            preparedStatement.setDouble(3, preco);
-            preparedStatement.setInt(4, id);
+            preparedStatement.setInt(2, id);
             sucesso = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();
             connection.close();
-
         } catch (SQLException ex) {
             return false;
         }
         return sucesso;
     }
 
-    /**
-     * Método utilizado para remover um assinatura existente pelo id
-     *
-     * @param id
-     * @return
-     */
-    public boolean removerAssinatura(int id) {
+    public boolean remover(int id) {
         boolean sucesso = false;
         try {
-
             Connection connection = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM assinatura WHERE id = ?");
+            PreparedStatement desvincula = connection.prepareStatement("UPDATE produtos SET categoria_id = NULL WHERE categoria_id = ?");
+            desvincula.setInt(1, id);
+            desvincula.executeUpdate();
+            desvincula.close();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM categorias WHERE id = ?");
             preparedStatement.setInt(1, id);
             sucesso = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();
             connection.close();
-
         } catch (SQLException ex) {
             return false;
         }
         return sucesso;
+    }
+
+    private Categoria montar(ResultSet resultSet) throws SQLException {
+        Categoria categoria = new Categoria();
+        categoria.setId(resultSet.getInt("id"));
+        categoria.setNome(resultSet.getString("nome"));
+        return categoria;
     }
 
 }

@@ -1,4 +1,4 @@
-<%-- Document : index Created on : 31 de mai. de 2026, 15:04:38 Author : thimo --%>
+
 
     <%@page contentType="text/html" pageEncoding="UTF-8" %>
         <!DOCTYPE html>
@@ -41,12 +41,14 @@
                                     <% }%>
 
                                             <div>
+                                                <label for="login" class="mb-4">Nome do usuário: <span class="required">*</span></label>
                                                 <input type="text" placeholder="Seu nome de usuário"
                                                     class="w-full bg-white border border-[#EBE0D2] rounded-xl px-5 py-3.5 font-body text-brand-brown-footer placeholder:text-[#C4B4A9] placeholder focus:outline-none focus:ring-1 focus:ring-brand-button focus:border-brand-button transition-colors"
                                                     required name="login">
                                             </div>
 
                                             <div>
+                                                <label for="senha" class="mb-4">Senha: <span class="required">*</span></label>
                                                 <input type="password" placeholder="Sua senha"
                                                     class="w-full bg-white border border-[#EBE0D2] rounded-xl px-5 py-3.5 font-body text-brand-brown-footer placeholder:text-[#C4B4A9] placeholder focus:outline-none focus:ring-1 focus:ring-brand-button focus:border-brand-button transition-colors"
                                                     required name="senha">

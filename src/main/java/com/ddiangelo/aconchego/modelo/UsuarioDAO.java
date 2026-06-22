@@ -6,19 +6,10 @@ import java.sql.*;
 import com.ddiangelo.aconchego.ConnectionFactory;
 import com.ddiangelo.aconchego.Utils;
 
-/**
- *
- * @author Thiago Moreira
- *
- * Classe que implementa o padrão DAO para a entidade Usuário
- */
+
 public class UsuarioDAO {
 
-    /**
-     * Método utilizado para obter todos os usuários existentes
-     *
-     * @return
-     */
+    
     public List<Usuario> obterTodos() {
         List<Usuario> resultado = new ArrayList<Usuario>();
         try {
@@ -50,12 +41,7 @@ public class UsuarioDAO {
         return resultado;
     }
 
-    /**
-     * Método utilizado para obter um usuário existente pelo id
-     *
-     * @param id
-     * @return
-     */
+    
     public Usuario obterPeloId(int id) {
         Usuario usuario = null;
         try {
@@ -85,12 +71,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    /**
-     * Método utilizado para obter um usuário existente pelo login
-     *
-     * @param login
-     * @return
-     */
+    
     public Usuario obterPeloLogin(String login) {
         Usuario usuario = null;
         try {
@@ -120,16 +101,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    /**
-     * Método utilizado para inserir um usuário do tipo cliente
-     *
-     * @param nome
-     * @param endereco
-     * @param email
-     * @param login
-     * @param senha
-     * @return
-     */
+    
     public boolean inserirCliente(String nome, String endereco, String email, String login, String senha) {
         boolean sucesso = false;
         try {
@@ -152,17 +124,54 @@ public class UsuarioDAO {
         return sucesso;
     }
 
-    /**
-     * Método utilizado para atualizar os dados de um usuário existente exceto a
-     * senha
-     *
-     * @param nome
-     * @param endereco
-     * @param email
-     * @param login
-     * @param id
-     * @return
-     */
+    
+    public boolean inserir(String nome, String endereco, String email, String login, String senha, boolean administrador) {
+        boolean sucesso = false;
+        try {
+
+            Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO usuarios (nome, endereco, email, login, senha, administrador) VALUES (?, ?, ?, ?, ?, ?)");
+            preparedStatement.setString(1, nome);
+            preparedStatement.setString(2, endereco);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, login);
+            preparedStatement.setString(5, Utils.gerarSHA256(senha));
+            preparedStatement.setBoolean(6, administrador);
+            sucesso = (preparedStatement.executeUpdate() == 1);
+            preparedStatement.close();
+            connection.close();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return sucesso;
+    }
+
+    
+    public boolean atualizarComPerfil(String nome, String endereco, String email, String login, boolean administrador, int id) {
+        boolean sucesso = false;
+        try {
+
+            Connection connection = ConnectionFactory.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE usuarios SET nome = ?, endereco = ?, email = ?, login = ?, administrador = ? WHERE id = ?");
+            preparedStatement.setString(1, nome);
+            preparedStatement.setString(2, endereco);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, login);
+            preparedStatement.setBoolean(5, administrador);
+            preparedStatement.setInt(6, id);
+            sucesso = (preparedStatement.executeUpdate() == 1);
+            preparedStatement.close();
+            connection.close();
+
+        } catch (SQLException ex) {
+            return false;
+        }
+        return sucesso;
+    }
+
+    
     public boolean atualizar(String nome, String endereco, String email, String login, int id) {
         boolean sucesso = false;
         try {
@@ -184,17 +193,7 @@ public class UsuarioDAO {
         return sucesso;
     }
 
-    /**
-     * Método utilizado para atualizar um usuário existente
-     * 
-     * @param nome
-     * @param endereco
-     * @param email
-     * @param login
-     * @param senha
-     * @param id
-     * @return 
-     */
+    
     public boolean atualizar(String nome, String endereco, String email, String login, String senha, int id) {
         boolean sucesso = false;
         try {
@@ -217,11 +216,7 @@ public class UsuarioDAO {
         return sucesso;
     }
 
-    /**
-     * Método utilizado para remover um usuário existente pelo id
-     * @param id
-     * @return 
-     */
+    
     public boolean remover(int id) {
         boolean sucesso = false;
         try {
@@ -239,12 +234,7 @@ public class UsuarioDAO {
         return sucesso;
     }
 
-    /**
-     * Método utilizado para remover um usuário existente pelo login
-     * 
-     * @param login
-     * @return 
-     */
+    
     public boolean remover(String login) {
         boolean sucesso = false;
         try {

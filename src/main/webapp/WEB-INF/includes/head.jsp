@@ -1,11 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>-->
+
 <script src="https://cdn.tailwindcss.com?version=3.4.5"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
 <script>
   tailwind.config = {
     theme: {
@@ -37,8 +38,9 @@
           'display-1': ['2.5rem', { lineHeight: '1.2' }], 
           'heading-1': ['2.25rem', { lineHeight: '1.3' }], 
           'heading-2': ['1.25rem', { lineHeight: '1.4' }],  
-          'base-body': ['1rem', { lineHeight: '1.7' }],   
-          'price': ['1.25rem', { lineHeight: '1.2' }],     
+          'base-body': ['1.25rem', { lineHeight: '1.7' }],   
+          'base-body-2': ['1rem', { lineHeight: '1.4' }],   
+          'price': ['1.75rem', { lineHeight: '1.2' }],     
         },
         spacing: {
           'gutter': '2rem',       
@@ -64,17 +66,21 @@
     header {
         @apply bg-brand-cream-lightener;
     }
+    
+    .required {
+        @apply text-red-500;
+    }
 
     .section-container {
       @apply container mx-auto px-gutter mb-section-gap max-w-6xl;
     }
 
     .title-section {
-      @apply font-heading text-heading-1 text-brand-brown-dark text-center mb-element-gap font-bold;
+      @apply font-heading text-heading-1 text-brand-brown-footer text-center mb-element-gap font-bold; 
     }
 
     .text-description {
-      @apply font-body text-base-body text-brand-brown-medium font-normal leading-relaxed;
+      @apply font-body text-base-body text-brand-brown-footer font-normal leading-relaxed;
     }
 
     .btn-base {
@@ -90,7 +96,7 @@
     }
 
     .card-product {
-      @apply rounded-2xl bg-brand-cream-light p-4 flex flex-col items-start border border-transparent hover:border-brand-cream-dark transition-all duration-200 relative;
+      @apply rounded-2xl bg-brand-cream-light pb-4 flex flex-col items-start border border-brand-cream-dark hover:border-brand-brown-footer transition-all duration-200 relative;
     }
 
     .card-product-image-wrapper {
@@ -98,15 +104,19 @@
     }
 
     .card-product-title {
-      @apply font-body text-heading-2 text-brand-brown-dark font-semibold mt-2;
+      @apply font-body text-heading-2 text-brand-brown-dark font-semibold mt-2 mx-4;
+    }
+    
+    .card-product-value {
+       @apply font-body text-price font-bold text-brand-brown-footer mb-4 mx-4;
     }
 
     .card-plan {
-      @apply rounded-2xl shadow-sm bg-white p-6 border border-neutral-light-gray flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1;
+      @apply rounded-2xl shadow-sm bg-white p-6 border border-neutral-light-gray flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1  mx-2;
     }
 
     .card-plan-highlight {
-      @apply card-plan bg-brand-yellow-highlight border-amber-100;
+      @apply card-plan bg-brand-yellow-highlight border-amber-100  mx-2;
     }
 
     .footer-main {

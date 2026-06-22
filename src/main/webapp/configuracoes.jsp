@@ -1,10 +1,10 @@
-<%--
-    Document   : configuracoes
-    Created on : 1 de jun. de 2026, 16:21:27
-    Author     : Usuário
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<%@page import="com.ddiangelo.aconchego.modelo.Pedido"%>
+<%@page import="com.ddiangelo.aconchego.modelo.PedidoItem"%>
+<%@page import="com.ddiangelo.aconchego.modelo.PedidoDAO"%>
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
@@ -17,12 +17,12 @@
             <div class="container mx-auto max-w-5xl">
 
                 <h1 class="font-heading text-4xl md:text-5xl text-brand-brown-footer text-center font-bold mb-10">
-                    Minha Conta
+                    Configurações da conta
                 </h1>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                    <%-- ===================== BARRA LATERAL ===================== --%>
+                    
                     <aside class="md:col-span-1">
                         <div class="bg-brand-cream-light rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.06)] p-8 flex flex-col h-full">
 
@@ -46,22 +46,14 @@
                                 <button type="button" data-tab-target="dados-panel"
                                         class="config-tab flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors bg-brand-cream-dark text-brand-brown-dark font-medium">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.25" stroke-width="1.5"></circle><path stroke-linecap="round" stroke-width="1.5" d="M5.5 19a6.5 6.5 0 0113 0"></path></svg>
-                                    Meus Dados
+                                    Meus dados
                                 </button>
 
                                 <button type="button" data-tab-target="pedidos-panel"
                                         class="config-tab flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors hover:bg-brand-cream-dark/60">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.27 6.96L12 12l8.73-5.04M12 22V12"></path></svg>
-                                    Meus Pedidos
+                                    Meus pedidos
                                 </button>
-
-                                <% if (usuario.isAdministrador()) { %>
-                                <button type="button" data-tab-target="estoque-panel"
-                                        class="config-tab flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors hover:bg-brand-cream-dark/60">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                                    Meu Estoque
-                                </button>
-                                <% } %>
                             </nav>
 
                             <a href="${pageContext.request.contextPath}/logout"
@@ -72,7 +64,7 @@
                         </div>
                     </aside>
 
-                    <%-- ===================== CONTEÚDO ===================== --%>
+                    
                     <section class="md:col-span-2">
                         <div class="bg-white rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-brand-cream-dark p-8 md:p-10">
 
@@ -88,15 +80,15 @@
                             </div>
                             <% } %>
 
-                            <%-- ----- Painel: Meus Dados ----- --%>
+                            
                             <div id="dados-panel" class="config-panel">
-                                <h3 class="font-heading text-3xl text-brand-brown-footer font-bold mb-8">Meus Dados</h3>
+                                <h3 class="font-heading text-3xl text-brand-brown-footer font-bold mb-8">Meus dados</h3>
 
                                 <form id="form-dados" action="configuracoes" method="POST" class="space-y-5">
                                     <input type="hidden" id="dados-senha-atual" name="senha-atual" value="">
 
                                     <div>
-                                        <label for="nome" class="block font-body text-brand-brown-footer font-bold mb-1.5">Nome Completo</label>
+                                        <label for="nome" class="block font-body text-brand-brown-footer font-bold mb-1.5">Nome completo</label>
                                         <input type="text" id="nome" name="nome" required value="<%= usuario.getNome() %>"
                                                class="w-full bg-white border border-[#EBE0D2] rounded-xl px-5 py-3.5 font-body text-brand-brown-footer placeholder:text-[#C4B4A9] focus:outline-none focus:ring-1 focus:ring-brand-button focus:border-brand-button transition-colors">
                                     </div>
@@ -106,16 +98,22 @@
                                         <input type="email" id="email" name="email" required value="<%= usuario.getEmail() %>"
                                                class="w-full bg-white border border-[#EBE0D2] rounded-xl px-5 py-3.5 font-body text-brand-brown-footer placeholder:text-[#C4B4A9] focus:outline-none focus:ring-1 focus:ring-brand-button focus:border-brand-button transition-colors">
                                     </div>
+                                               
+                                    <div>
+                                        <label for="endereco" class="block font-body text-brand-brown-footer font-bold mb-1.5">Endereço</label>
+                                        <input type="text" id="endereco" name="endereco" required value="<%= usuario.getEndereco() %>"
+                                               class="w-full bg-white border border-[#EBE0D2] rounded-xl px-5 py-3.5 font-body text-brand-brown-footer placeholder:text-[#C4B4A9] focus:outline-none focus:ring-1 focus:ring-brand-button focus:border-brand-button transition-colors">
+                                    </div>
 
                                     <button type="submit"
                                             class="bg-brand-green-btn hover:bg-brand-green-btn-hover text-white font-body font-medium px-6 py-3 rounded-xl shadow-md transition-colors">
-                                        Salvar Alterações
+                                        Salvar alterações
                                     </button>
                                 </form>
 
                                 <hr class="my-8 border-brand-cream-dark">
 
-                                <%-- ----- Seção: Senha ----- --%>
+                                
                                 <div class="flex items-center justify-between gap-4">
                                     <div>
                                         <h3 class="font-heading text-2xl text-brand-brown-footer font-bold">Senha</h3>
@@ -130,11 +128,11 @@
                                     </button>
                                 </div>
 
-                                <%-- ----- Zona de Perigo ----- --%>
+                                
                                 <div class="mt-10 border border-red-300 bg-red-50 rounded-2xl p-6">
                                     <div class="flex items-center gap-2 mb-2">
                                         <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>
-                                        <h4 class="font-heading text-xl text-red-700 font-bold">Zona de Perigo</h4>
+                                        <h4 class="font-heading text-xl text-red-700 font-bold">Zona de perigo</h4>
                                     </div>
                                     <p class="font-body text-sm text-red-600 mb-4">
                                         A exclusão da conta é permanente e remove todos os seus dados, favoritos e histórico de pedidos.
@@ -150,27 +148,48 @@
                                 </div>
                             </div>
 
-                            <%-- ----- Painel: Meus Pedidos ----- --%>
+                            
                             <div id="pedidos-panel" class="config-panel hidden">
                                 <h3 class="font-heading text-3xl text-brand-brown-footer font-bold mb-8">Meus Pedidos</h3>
+                                <%
+                                    List<Pedido> meusPedidos = new PedidoDAO().obterPorUsuario(usuario.getId());
+                                    if (meusPedidos == null || meusPedidos.isEmpty()) {
+                                %>
                                 <div class="flex flex-col items-center text-center py-12 text-brand-brown-medium">
                                     <svg class="w-16 h-16 mb-4 text-brand-cream-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path></svg>
                                     <p class="font-body">Você ainda não realizou nenhum pedido.</p>
                                     <a href="${pageContext.request.contextPath}/" class="mt-4 text-brand-green-btn hover:text-brand-green-btn-hover font-bold">Explorar produtos</a>
                                 </div>
-                            </div>
-
-                            <%-- ----- Painel: Meu Estoque ----- --%>
-                            <% if (usuario.isAdministrador()) { %>
-                            <div id="estoque-panel" class="config-panel hidden">
-                                <h3 class="font-heading text-3xl text-brand-brown-footer font-bold mb-8">Meu Estoque</h3>
-                                <div class="flex flex-col items-center text-center py-12 text-brand-brown-medium">
-                                    <svg class="w-16 h-16 mb-4 text-brand-cream-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                                    <p class="font-body">Gerencie aqui os produtos disponíveis na loja.</p>
-                                    <a href="${pageContext.request.contextPath}/" class="mt-4 text-brand-green-btn hover:text-brand-green-btn-hover font-bold">Ir para o catálogo</a>
+                                <%
+                                    } else {
+                                        for (Pedido ped : meusPedidos) {
+                                            String dataFmt = (ped.getDataHora() != null) ? ped.getDataHora().toString() : "";
+                                            String totalFmt = String.format("R$ %.2f", ped.getTotal()).replace('.', ',');
+                                %>
+                                <div class="border border-brand-cream-dark rounded-2xl mb-4 overflow-hidden">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 px-5 py-3 bg-brand-cream-lightener/60 border-b border-brand-cream-dark">
+                                        <span class="font-heading text-lg font-bold text-brand-brown-footer">Pedido #<%= ped.getId() %></span>
+                                        <span class="font-body text-sm text-brand-brown-medium"><%= dataFmt %> · <%= ped.getFormaPagamento() %></span>
+                                    </div>
+                                    <div class="divide-y divide-brand-cream-dark">
+                                        <% for (PedidoItem it : ped.getItens()) {
+                                               String sub = String.format("R$ %.2f", it.getSubtotal()).replace('.', ','); %>
+                                        <div class="flex items-center justify-between px-5 py-2.5">
+                                            <span class="font-body text-brand-brown-footer"><%= it.getProdutoNome() %> <span class="text-brand-brown-medium">× <%= it.getQuantidade() %></span></span>
+                                            <span class="font-body font-bold text-brand-brown-footer"><%= sub %></span>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                    <div class="flex items-center justify-between px-5 py-3 border-t border-brand-cream-dark">
+                                        <span class="font-body text-sm text-brand-brown-medium">Total</span>
+                                        <span class="font-body font-bold text-brand-green-btn"><%= totalFmt %></span>
+                                    </div>
                                 </div>
+                                <%
+                                        }
+                                    }
+                                %>
                             </div>
-                            <% } %>
 
                         </div>
                     </section>
@@ -178,7 +197,7 @@
             </div>
         </main>
 
-        <%-- ===================== MODAL: confirmar senha (dados) ===================== --%>
+        
         <div id="modal-dados" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
             <div class="bg-white rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.2)] w-full max-w-sm p-8">
                 <h3 class="font-heading text-2xl text-brand-brown-footer font-bold mb-2">Confirme sua senha</h3>
@@ -201,7 +220,7 @@
             </div>
         </div>
 
-        <%-- ===================== MODAL: alterar senha ===================== --%>
+        
         <div id="modal-senha" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
             <div class="bg-white rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.2)] w-full max-w-sm p-8">
                 <h3 class="font-heading text-2xl text-brand-brown-footer font-bold mb-5">Alterar senha</h3>
@@ -258,25 +277,25 @@
                 tabs.forEach(t => t.addEventListener('click', () => ativar(t.dataset.tabTarget)));
             })();
 
-            // ---------- Modais ----------
+
             (function () {
                 const abrir = (id) => document.getElementById(id).classList.remove('hidden');
                 const fechar = (id) => document.getElementById(id).classList.add('hidden');
 
-                // Fechar (botões "Cancelar" e clique no fundo)
+
                 document.querySelectorAll('[data-fechar-modal]').forEach(b =>
                     b.addEventListener('click', () => fechar(b.dataset.fecharModal)));
                 document.querySelectorAll('#modal-dados, #modal-senha').forEach(overlay =>
                     overlay.addEventListener('click', (e) => { if (e.target === overlay) fechar(overlay.id); }));
 
-                // --- Fluxo: salvar dados (confirmação de senha em modal) ---
+
                 const formDados = document.getElementById('form-dados');
                 const inputSenhaOculto = document.getElementById('dados-senha-atual');
                 const modalSenhaInput = document.getElementById('modal-dados-senha');
                 const modalDadosErro = document.getElementById('modal-dados-erro');
 
                 formDados.addEventListener('submit', (e) => {
-                    // Sem senha confirmada ainda: valida campos, abre o modal
+
                     if (!inputSenhaOculto.value) {
                         e.preventDefault();
                         if (!formDados.reportValidity()) return;
@@ -297,7 +316,7 @@
                     formDados.submit();
                 });
 
-                // --- Fluxo: alterar senha ---
+
                 document.getElementById('btn-editar-senha').addEventListener('click', () => {
                     document.getElementById('form-senha').reset();
                     document.getElementById('modal-senha-erro').classList.add('hidden');

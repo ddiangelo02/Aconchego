@@ -12,7 +12,7 @@ public class ConnectionFactory {
 
     private static final String JDBC_USER = "postgres";
 
-    private static final String JDBC_PASSWORD = "admin123";
+    private static final String JDBC_PASSWORD = "postgres";
     
 
     public static Connection getConnection() throws SQLException {
