@@ -24,7 +24,7 @@
         if (!urlAtual.equals(link)) { %>
 
     <div class="hidden md:flex w-1/3 relative">
-        <input type="text" id="busca-input" autocomplete="off" placeholder="O que você procura?" class="w-full bg-white border border-gray-200 rounded-full px-6 py-2 text-sm focus:outline-none focus:border-brand-button">
+        <input type="search" id="busca-input" placeholder="O que você procura?" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" data-lpignore="true" class="w-full bg-white border border-gray-200 rounded-full px-6 py-2 text-sm focus:outline-none focus:border-brand-button">
         <div id="busca-resultados" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg z-50 overflow-hidden max-h-96 overflow-y-auto"></div>
     </div>
     <% } %>

@@ -10,6 +10,10 @@
     double totalGeral = (Double) request.getAttribute("totalGeral");
     String totalFmt = String.format("R$ %.2f", totalGeral).replace('.', ',');
     String busca = (String) request.getAttribute("busca");
+
+    String mensagem = (String) session.getAttribute("mensagem");
+    String statusMsg = (String) session.getAttribute("status");
+    if (mensagem != null) { session.removeAttribute("mensagem"); session.removeAttribute("status"); }
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,6 +26,14 @@
             <div class="flex-1 flex flex-col min-w-0">
                 <%@ include file='/WEB-INF/includes/admin-header.jsp' %>
                 <main class="flex-1 p-8">
+
+                    <% if (mensagem != null) {
+                           boolean ok = "sucesso".equals(statusMsg); %>
+                    <div class="mb-6 px-4 py-3 rounded-xl border <%= ok ? "bg-green-100 border-green-400 text-green-700" : "bg-red-100 border-red-400 text-red-700" %>" role="alert">
+                        <strong class="font-bold"><%= ok ? "Sucesso!" : "Erro!" %></strong>
+                        <span class="ml-1"><%= mensagem %></span>
+                    </div>
+                    <% } %>
 
                     <div class="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between mb-6">
                         <form action="${pageContext.request.contextPath}/admin/pedidos" method="GET" class="relative w-full sm:max-w-md">
@@ -55,6 +67,13 @@
                             <div class="flex items-center gap-4">
                                 <span class="font-body text-sm text-brand-brown-medium"><%= dataFmt %></span>
                                 <span class="inline-flex items-center rounded-full bg-brand-cream-dark px-3 py-1 text-xs font-bold text-brand-brown-footer"><%= p.getFormaPagamento() %></span>
+                                <form action="${pageContext.request.contextPath}/admin/pedidos" method="POST" onsubmit="return confirm('Cancelar/excluir o pedido #<%= p.getId() %> de <%= p.getUsuarioNome() %>? O estoque dos itens será devolvido. Esta ação não pode ser desfeita.');">
+                                    <input type="hidden" name="acao" value="excluir">
+                                    <input type="hidden" name="id" value="<%= p.getId() %>">
+                                    <button type="submit" title="Cancelar/excluir pedido" class="text-red-400 hover:text-red-600 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M19 7l-.87 12.14A2 2 0 0116.14 21H7.86a2 2 0 01-1.99-1.86L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3M4 7h16"></path></svg>
+                                    </button>
+                                </form>
                             </div>
                         </div>
 

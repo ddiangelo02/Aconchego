@@ -162,6 +162,41 @@ public class PedidoDAO {
         return resultado;
     }
 
+    public boolean excluir(int pedidoId) {
+        Connection connection = null;
+        try {
+            connection = ConnectionFactory.getConnection();
+            connection.setAutoCommit(false);
+
+            // Cancelamento: devolve ao estoque a quantidade de cada item do pedido
+            try (PreparedStatement psRestore = connection.prepareStatement(
+                    "UPDATE produtos p SET quantidade = p.quantidade + i.quantidade "
+                    + "FROM pedido_itens i WHERE i.produto_id = p.id AND i.pedido_id = ?")) {
+                psRestore.setInt(1, pedidoId);
+                psRestore.executeUpdate();
+            }
+
+            boolean ok;
+            try (PreparedStatement ps = connection.prepareStatement("DELETE FROM pedidos WHERE id = ?")) {
+                ps.setInt(1, pedidoId);
+                ok = ps.executeUpdate() == 1;
+            }
+
+            if (ok) {
+                connection.commit();
+            } else {
+                connection.rollback();
+            }
+            return ok;
+
+        } catch (SQLException ex) {
+            try { if (connection != null) connection.rollback(); } catch (SQLException ignore) {}
+            return false;
+        } finally {
+            try { if (connection != null) { connection.setAutoCommit(true); connection.close(); } } catch (SQLException ignore) {}
+        }
+    }
+
     public int contarTodos() {
         int total = 0;
         try {

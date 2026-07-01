@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +53,30 @@ public class AdminPedidoServlet extends HttpServlet {
         request.setAttribute("totalGeral", total);
         request.setAttribute("busca", busca != null ? busca : "");
         request.getRequestDispatcher("/admin/pedidos.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        String acao = request.getParameter("acao");
+
+        if ("excluir".equals(acao)) {
+            int id = parseInt(request.getParameter("id"), -1);
+            boolean ok = new PedidoDAO().excluir(id);
+            session.setAttribute("mensagem", ok ? "Pedido cancelado e removido. O estoque dos itens foi devolvido." : "Não foi possível cancelar o pedido.");
+            session.setAttribute("status", ok ? "sucesso" : "erro");
+        }
+
+        response.sendRedirect(request.getContextPath() + "/admin/pedidos");
+    }
+
+    private static int parseInt(String v, int padrao) {
+        try {
+            return Integer.parseInt(v.trim());
+        } catch (Exception e) {
+            return padrao;
+        }
     }
 }

@@ -91,9 +91,7 @@
                     </div>
 
                     <aside class="lg:col-span-1">
-                        <form action="${pageContext.request.contextPath}/carrinho" method="POST"
-                              class="bg-white rounded-2xl border border-brand-cream-dark p-6 lg:sticky lg:top-8 space-y-5">
-                            <input type="hidden" name="acao" value="finalizar">
+                        <div class="bg-white rounded-2xl border border-brand-cream-dark p-6 lg:sticky lg:top-8 space-y-5">
 
                             <h2 class="font-heading text-2xl text-brand-brown-footer font-bold">Resumo do pedido</h2>
 
@@ -119,26 +117,13 @@
 
                             <hr class="border-brand-cream-dark">
 
-                            <div>
-                                <label for="forma-pagamento" class="block font-body text-sm font-bold text-brand-brown-footer mb-1.5">Forma de pagamento</label>
-                                <select id="forma-pagamento" name="forma-pagamento"
-                                        class="w-full bg-white border border-brand-cream-dark rounded-xl px-4 py-2.5 font-body text-brand-brown-footer focus:outline-none focus:ring-1 focus:ring-brand-button focus:border-brand-button">
-                                    <option value="Pix">Pix</option>
-                                    <option value="Cartão de crédito">Cartão de crédito</option>
-                                    <option value="Cartão de débito">Cartão de débito</option>
-                                    <option value="Boleto bancário">Boleto bancário</option>
-                                </select>
-                            </div>
-
-                            <hr class="border-brand-cream-dark">
-
                             <div class="flex items-center justify-between">
                                 <span class="font-body text-brand-brown-medium">Total</span>
                                 <span id="total-carrinho" class="font-heading text-3xl font-bold text-brand-brown-footer"><%= totalFmt %></span>
                             </div>
 
-                            <button type="submit" class="btn-green w-full text-lg">Finalizar compra</button>
-                        </form>
+                            <a href="${pageContext.request.contextPath}/pagamento" class="btn-green w-full text-lg text-center block">Ir para o pagamento</a>
+                        </div>
                     </aside>
                 </div>
                 <% } %>
